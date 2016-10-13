@@ -13,8 +13,6 @@
     }
   });
 
-
-
   $('select').material_select();
 
 })();

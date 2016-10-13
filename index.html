@@ -5,8 +5,9 @@
     <title>Camera View</title>
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-  <body ng-init="cameras = [{id: 1,name: 'Nikon D3100 DSLR',image: 'http://ecx.images-amazon.com/images/I/713u2gDQqML._SX522_.jpg',rating: 4,price: 369.99,onSale: true},{id: 2,name: 'Canon EOS 70D',image: 'http://ecx.images-amazon.com/images/I/81U00AkAUWL._SX522_.jpg',rating: 2,price: 1099.0,onSale: false},{id: 3,name: 'Nikon D810A',image:'http://ecx.images-amazon.com/images/I/91wtXIfLl2L._SX522_.jpg',rating: 3,price: 3796.95,onSale: true}]">
+  <body>
     <div class="container">
       <header>
         <h1>Camera Shop</h1>
@@ -24,7 +25,7 @@
                   <option value="rating">Rating</option>
                 </select>
               </div>
-              <div class="col s12 m8">
+              <div ng-controller="CatalogController" class="col s12 m8">
                 <ul ng-repeat="camera in cameras | filter : searchText | orderBy : selection ">
                   <li>
                     <h3>{{camera.name}}</h3>
@@ -32,7 +33,8 @@
                     <h4>{{camera.price | currency}}</h4>
                     <h5>Rating: {{camera.rating | asterisk}}</h5>
                     <h5 ng-show="{{camera.onSale}} === true">On Sale!!!</h5>
-                    <a class="waves-effect waves-light btn">Add to Cart</a>
+                    <a class="waves-effect waves-light btn" ng-click="addToCart(camera)">Add to Cart</a>
+                    <!-- make this function increment a counter and check the array for unique elements as to display only one unique element -->
                   </li>
                 </ul>
               </div>
@@ -42,6 +44,14 @@
             <div class="card blue-grey">
               <div class="card-content white-text">
                 <span class="card-title">Your Cart</span>
+                <div ng-controller="CartController">
+                  <ul class="cart card white-grey"ng-repeat="item in inCart">
+                    <li class="cartItem card-content black-text"><p class="itemInfo">{{item.count}} {{item.name}} {{item.price | currency}} <i class="material-icons" ng-click="delete(item)">delete</i></p></li>
+                  </ul>
+                  <p>Subtotal: {{subtotal | currency}}</p>
+                  <p>Tax: {{tax | currency}}</p>
+                  <p class="total">Total: {{total | currency}}</p>
+                </div>
               </div>
               <div class="card-action">
                 <a href="#">Checkout</a>
@@ -55,5 +65,6 @@
     <script src="js/angular.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/controller.js"></script>
   </body>
 </html>
